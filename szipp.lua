@@ -11,6 +11,8 @@ mainFrame.Size = UDim2.new(0, 180, 0, 400)
 mainFrame.Position = UDim2.new(0, 10, 0.5, -200)
 mainFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
 mainFrame.BorderSizePixel = 0
+mainFrame.Active = true
+mainFrame.Draggable = true
 mainFrame.ClipsDescendants = true
 
 local uiList = Instance.new("UIListLayout", mainFrame)
