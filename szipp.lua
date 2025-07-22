@@ -7,19 +7,42 @@ assistGui.Name = "AssistenteUI"
 assistGui.ResetOnSpawn = false
 
 local mainFrame = Instance.new("Frame", assistGui)
-mainFrame.Size = UDim2.new(0, 180, 0, 400)
-mainFrame.Position = UDim2.new(0, 10, 0.5, -200)
-mainFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+mainFrame.Size = UDim2.new(0, 200, 0, 400)
+mainFrame.Position = UDim2.new(0, 500, 0.3, 0)
+mainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
 mainFrame.BorderSizePixel = 0
+mainFrame.ClipsDescendants = true
 mainFrame.Active = true
 mainFrame.Draggable = true
-mainFrame.ClipsDescendants = true
 
-local uiList = Instance.new("UIListLayout", mainFrame)
-uiList.Padding = UDim.new(0, 4)
-uiList.FillDirection = Enum.FillDirection.Vertical
-uiList.SortOrder = Enum.SortOrder.LayoutOrder
-uiList.HorizontalAlignment = Enum.HorizontalAlignment.Center
+local title = Instance.new("TextLabel", mainFrame)
+title.Size = UDim2.new(1, 0, 0, 30)
+title.BackgroundTransparency = 1
+title.Text = "Assistente UI"
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.TextSize = 20
+title.Font = Enum.Font.SourceSansBold
+
+local close = Instance.new("TextButton", mainFrame)
+close.Size = UDim2.new(0, 30, 0, 30)
+close.Position = UDim2.new(1, -30, 0, 0)
+close.Text = "X"
+close.TextColor3 = Color3.fromRGB(255, 80, 80)
+close.TextSize = 18
+close.BackgroundTransparency = 1
+close.Font = Enum.Font.SourceSansBold
+close.MouseButton1Click:Connect(function()
+	assistGui:Destroy()
+end)
+
+local listLayout = Instance.new("UIListLayout", mainFrame)
+listLayout.Padding = UDim.new(0, 4)
+listLayout.FillDirection = Enum.FillDirection.Vertical
+listLayout.SortOrder = Enum.SortOrder.LayoutOrder
+listLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+
+title.LayoutOrder = -2
+close.LayoutOrder = -1
 
 local function copyToClipboard(text)
 	setclipboard(text)
@@ -28,7 +51,7 @@ end
 local function createButton(text, callback)
 	local button = Instance.new("TextButton")
 	button.Size = UDim2.new(1, -10, 0, 30)
-	button.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+	button.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
 	button.TextColor3 = Color3.fromRGB(255, 255, 255)
 	button.Text = text
 	button.Font = Enum.Font.SourceSans
