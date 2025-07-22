@@ -1,78 +1,72 @@
 local gui = Instance.new("ScreenGui", game.CoreGui)
-local frame = Instance.new("Frame", gui)
-local closeBtn = Instance.new("TextButton", frame)
-local scroll = Instance.new("ScrollingFrame", frame)
-local textbox = Instance.new("TextBox", scroll)
-local loadBtn = Instance.new("TextButton", frame)
-local copyBtn = Instance.new("TextButton", frame)
-local clearBtn = Instance.new("TextButton", frame)
+gui.Name = "UIAssistant"
 
-gui.Name = "ExploitEditor"
-frame.Size = UDim2.new(0, 400, 0, 300)
-frame.Position = UDim2.new(0.5, -200, 0.5, -150)
-frame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-frame.BorderSizePixel = 0
+local frame = Instance.new("Frame", gui)
+frame.Size = UDim2.new(0, 250, 0, 400)
+frame.Position = UDim2.new(0.5, -125, 0.5, -200)
+frame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+frame.Active = true
+frame.Draggable = true
 Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 8)
 
-closeBtn.Size = UDim2.new(0, 30, 0, 30)
-closeBtn.Position = UDim2.new(1, -35, 0, 5)
-closeBtn.Text = "X"
-closeBtn.BackgroundColor3 = Color3.fromRGB(255, 60, 60)
-Instance.new("UICorner", closeBtn).CornerRadius = UDim.new(0, 6)
+local title = Instance.new("TextLabel", frame)
+title.Size = UDim2.new(1, 0, 0, 30)
+title.BackgroundTransparency = 1
+title.Text = "🛠️ UI Assistente"
+title.TextColor3 = Color3.new(1, 1, 1)
+title.TextSize = 16
+title.Font = Enum.Font.SourceSansBold
 
-scroll.Size = UDim2.new(1, -20, 0.6, 0)
-scroll.Position = UDim2.new(0, 10, 0, 40)
-scroll.CanvasSize = UDim2.new(0, 0, 3, 0)
+local scroll = Instance.new("ScrollingFrame", frame)
+scroll.Size = UDim2.new(1, -20, 1, -40)
+scroll.Position = UDim2.new(0, 10, 0, 35)
+scroll.CanvasSize = UDim2.new(0, 0, 2, 0)
+scroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
 scroll.ScrollBarThickness = 6
-scroll.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-Instance.new("UICorner", scroll).CornerRadius = UDim.new(0, 6)
+scroll.BackgroundTransparency = 1
 
-textbox.Size = UDim2.new(1, -10, 1, 0)
-textbox.Position = UDim2.new(0, 5, 0, 0)
-textbox.BackgroundTransparency = 1
-textbox.TextXAlignment = Enum.TextXAlignment.Left
-textbox.TextYAlignment = Enum.TextYAlignment.Top
-textbox.ClearTextOnFocus = false
-textbox.TextEditable = true
-textbox.MultiLine = true
-textbox.Text = ""
-textbox.TextSize = 14
-textbox.TextColor3 = Color3.new(1, 1, 1)
-textbox.Font = Enum.Font.Code
+local layout = Instance.new("UIListLayout", scroll)
+layout.Padding = UDim.new(0, 6)
+layout.SortOrder = Enum.SortOrder.LayoutOrder
 
-loadBtn.Size = UDim2.new(0, 120, 0, 35)
-loadBtn.Position = UDim2.new(0, 10, 1, -45)
-loadBtn.Text = "Loadstring"
-loadBtn.BackgroundColor3 = Color3.fromRGB(60, 120, 255)
-Instance.new("UICorner", loadBtn).CornerRadius = UDim.new(0, 6)
+local function createCodeButton(name, code)
+	local btn = Instance.new("TextButton", scroll)
+	btn.Size = UDim2.new(1, 0, 0, 30)
+	btn.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+	btn.TextColor3 = Color3.new(1, 1, 1)
+	btn.Font = Enum.Font.SourceSansBold
+	btn.TextSize = 14
+	btn.Text = "Copiar: " .. name
+	Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 6)
 
-copyBtn.Size = UDim2.new(0, 120, 0, 35)
-copyBtn.Position = UDim2.new(0, 140, 1, -45)
-copyBtn.Text = "Copiar"
-copyBtn.BackgroundColor3 = Color3.fromRGB(0, 170, 127)
-Instance.new("UICorner", copyBtn).CornerRadius = UDim.new(0, 6)
+	btn.MouseButton1Click:Connect(function()
+		if setclipboard then
+			setclipboard(code)
+		end
+	end)
+end
 
-clearBtn.Size = UDim2.new(0, 120, 0, 35)
-clearBtn.Position = UDim2.new(0, 270, 1, -45)
-clearBtn.Text = "Limpar"
-clearBtn.BackgroundColor3 = Color3.fromRGB(255, 140, 0)
-Instance.new("UICorner", clearBtn).CornerRadius = UDim.new(0, 6)
+-- ELEMENTOS UI
+createCodeButton("Frame", [[local frame = Instance.new("Frame")]])
+createCodeButton("TextLabel", [[local label = Instance.new("TextLabel")]])
+createCodeButton("TextButton", [[local button = Instance.new("TextButton")]])
+createCodeButton("ImageLabel", [[local imgLabel = Instance.new("ImageLabel")]])
+createCodeButton("ImageButton", [[local imgButton = Instance.new("ImageButton")]])
+createCodeButton("ScrollingFrame", [[local scroll = Instance.new("ScrollingFrame")]])
+createCodeButton("TextBox", [[local textbox = Instance.new("TextBox")]])
+createCodeButton("ViewportFrame", [[local viewport = Instance.new("ViewportFrame")]])
 
-closeBtn.MouseButton1Click:Connect(function()
+-- BOTÃO X
+local close = Instance.new("TextButton", frame)
+close.Size = UDim2.new(0, 30, 0, 30)
+close.Position = UDim2.new(1, -35, 0, 5)
+close.Text = "X"
+close.TextColor3 = Color3.new(1, 1, 1)
+close.Font = Enum.Font.SourceSansBold
+close.TextSize = 16
+close.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
+Instance.new("UICorner", close).CornerRadius = UDim.new(0, 6)
+
+close.MouseButton1Click:Connect(function()
 	gui:Destroy()
-end)
-
-loadBtn.MouseButton1Click:Connect(function()
-	local code = textbox.Text
-	loadstring(code)()
-end)
-
-copyBtn.MouseButton1Click:Connect(function()
-	if setclipboard then
-		setclipboard(textbox.Text)
-	end
-end)
-
-clearBtn.MouseButton1Click:Connect(function()
-	textbox.Text = ""
 end)
