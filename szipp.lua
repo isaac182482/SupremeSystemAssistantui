@@ -1,72 +1,131 @@
-local gui = Instance.new("ScreenGui", game.CoreGui)
-gui.Name = "UIAssistant"
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local gui = player:WaitForChild("PlayerGui")
 
-local frame = Instance.new("Frame", gui)
-frame.Size = UDim2.new(0, 250, 0, 400)
-frame.Position = UDim2.new(0.5, -125, 0.5, -200)
-frame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-frame.Active = true
-frame.Draggable = true
-Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 8)
+local assistGui = Instance.new("ScreenGui", gui)
+assistGui.Name = "AssistenteUI"
+assistGui.ResetOnSpawn = false
 
-local title = Instance.new("TextLabel", frame)
-title.Size = UDim2.new(1, 0, 0, 30)
-title.BackgroundTransparency = 1
-title.Text = "🛠️ UI Assistente"
-title.TextColor3 = Color3.new(1, 1, 1)
-title.TextSize = 16
-title.Font = Enum.Font.SourceSansBold
+local mainFrame = Instance.new("Frame", assistGui)
+mainFrame.Size = UDim2.new(0, 180, 0, 400)
+mainFrame.Position = UDim2.new(0, 10, 0.5, -200)
+mainFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+mainFrame.BorderSizePixel = 0
+mainFrame.ClipsDescendants = true
 
-local scroll = Instance.new("ScrollingFrame", frame)
-scroll.Size = UDim2.new(1, -20, 1, -40)
-scroll.Position = UDim2.new(0, 10, 0, 35)
-scroll.CanvasSize = UDim2.new(0, 0, 2, 0)
-scroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
-scroll.ScrollBarThickness = 6
-scroll.BackgroundTransparency = 1
+local uiList = Instance.new("UIListLayout", mainFrame)
+uiList.Padding = UDim.new(0, 4)
+uiList.FillDirection = Enum.FillDirection.Vertical
+uiList.SortOrder = Enum.SortOrder.LayoutOrder
+uiList.HorizontalAlignment = Enum.HorizontalAlignment.Center
 
-local layout = Instance.new("UIListLayout", scroll)
-layout.Padding = UDim.new(0, 6)
-layout.SortOrder = Enum.SortOrder.LayoutOrder
-
-local function createCodeButton(name, code)
-	local btn = Instance.new("TextButton", scroll)
-	btn.Size = UDim2.new(1, 0, 0, 30)
-	btn.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-	btn.TextColor3 = Color3.new(1, 1, 1)
-	btn.Font = Enum.Font.SourceSansBold
-	btn.TextSize = 14
-	btn.Text = "Copiar: " .. name
-	Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 6)
-
-	btn.MouseButton1Click:Connect(function()
-		if setclipboard then
-			setclipboard(code)
-		end
-	end)
+local function copyToClipboard(text)
+	setclipboard(text)
 end
 
--- ELEMENTOS UI
-createCodeButton("Frame", [[local frame = Instance.new("Frame")]])
-createCodeButton("TextLabel", [[local label = Instance.new("TextLabel")]])
-createCodeButton("TextButton", [[local button = Instance.new("TextButton")]])
-createCodeButton("ImageLabel", [[local imgLabel = Instance.new("ImageLabel")]])
-createCodeButton("ImageButton", [[local imgButton = Instance.new("ImageButton")]])
-createCodeButton("ScrollingFrame", [[local scroll = Instance.new("ScrollingFrame")]])
-createCodeButton("TextBox", [[local textbox = Instance.new("TextBox")]])
-createCodeButton("ViewportFrame", [[local viewport = Instance.new("ViewportFrame")]])
+local function createButton(text, callback)
+	local button = Instance.new("TextButton")
+	button.Size = UDim2.new(1, -10, 0, 30)
+	button.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+	button.TextColor3 = Color3.fromRGB(255, 255, 255)
+	button.Text = text
+	button.Font = Enum.Font.SourceSans
+	button.TextSize = 18
+	button.BorderSizePixel = 0
+	button.Parent = mainFrame
+	button.MouseButton1Click:Connect(callback)
+end
 
--- BOTÃO X
-local close = Instance.new("TextButton", frame)
-close.Size = UDim2.new(0, 30, 0, 30)
-close.Position = UDim2.new(1, -35, 0, 5)
-close.Text = "X"
-close.TextColor3 = Color3.new(1, 1, 1)
-close.Font = Enum.Font.SourceSansBold
-close.TextSize = 16
-close.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
-Instance.new("UICorner", close).CornerRadius = UDim.new(0, 6)
+local Instances = {
+	Frame = [[
+local Frame = Instance.new("Frame")
+Frame.Size = UDim2.new(0, 200, 0, 100)
+Frame.Position = UDim2.new(0.5, -100, 0.5, -50)
+Frame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+Frame.BackgroundTransparency = 0
+Frame.BorderSizePixel = 0
+Frame.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+]],
 
-close.MouseButton1Click:Connect(function()
-	gui:Destroy()
-end)
+	TextLabel = [[
+local TextLabel = Instance.new("TextLabel")
+TextLabel.Size = UDim2.new(0, 200, 0, 50)
+TextLabel.Position = UDim2.new(0.5, -100, 0.5, -25)
+TextLabel.Text = "Texto aqui"
+TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+TextLabel.BackgroundTransparency = 0
+TextLabel.TextScaled = true
+TextLabel.Font = Enum.Font.SourceSans
+TextLabel.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+]],
+
+	TextBox = [[
+local TextBox = Instance.new("TextBox")
+TextBox.Size = UDim2.new(0, 200, 0, 50)
+TextBox.Position = UDim2.new(0.5, -100, 0.5, -25)
+TextBox.PlaceholderText = "Digite aqui"
+TextBox.Text = ""
+TextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+TextBox.BackgroundTransparency = 0
+TextBox.TextScaled = true
+TextBox.Font = Enum.Font.SourceSans
+TextBox.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+]],
+
+	TextButton = [[
+local TextButton = Instance.new("TextButton")
+TextButton.Size = UDim2.new(0, 200, 0, 50)
+TextButton.Position = UDim2.new(0.5, -100, 0.5, -25)
+TextButton.Text = "Clique aqui"
+TextButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+TextButton.BackgroundTransparency = 0
+TextButton.TextScaled = true
+TextButton.Font = Enum.Font.SourceSans
+TextButton.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+]],
+
+	ImageLabel = [[
+local ImageLabel = Instance.new("ImageLabel")
+ImageLabel.Size = UDim2.new(0, 200, 0, 200)
+ImageLabel.Position = UDim2.new(0.5, -100, 0.5, -100)
+ImageLabel.Image = "rbxassetid://INSERT_ID"
+ImageLabel.BackgroundTransparency = 1
+ImageLabel.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+]],
+
+	ImageButton = [[
+local ImageButton = Instance.new("ImageButton")
+ImageButton.Size = UDim2.new(0, 200, 0, 200)
+ImageButton.Position = UDim2.new(0.5, -100, 0.5, -100)
+ImageButton.Image = "rbxassetid://INSERT_ID"
+ImageButton.BackgroundTransparency = 1
+ImageButton.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+]],
+
+	ScrollingFrame = [[
+local ScrollingFrame = Instance.new("ScrollingFrame")
+ScrollingFrame.Size = UDim2.new(0, 250, 0, 150)
+ScrollingFrame.Position = UDim2.new(0.5, -125, 0.5, -75)
+ScrollingFrame.CanvasSize = UDim2.new(0, 0, 2, 0)
+ScrollingFrame.ScrollBarThickness = 8
+ScrollingFrame.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+ScrollingFrame.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+]],
+
+	UIListLayout = [[
+local UIListLayout = Instance.new("UIListLayout")
+UIListLayout.FillDirection = Enum.FillDirection.Vertical
+UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UIListLayout.Padding = UDim.new(0, 6)
+UIListLayout.Parent = script.Parent
+]]
+}
+
+for name, code in pairs(Instances) do
+	createButton("📋 " .. name, function()
+		copyToClipboard(code)
+	end)
+end
